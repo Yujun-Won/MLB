@@ -29,14 +29,12 @@ for category in categories:
         team = value.find_elements(By.TAG_NAME, "td")[1].text.split("\n")[1]
         position = value.find_elements(By.TAG_NAME, "td")[2].text
         age = value.find_elements(By.TAG_NAME, "td")[3].text
-
-        # batter와 pitcher에 따라 다른 요소를 구분 (batter: bat / pitcher: throw)
         bat_throw = value.find_elements(By.TAG_NAME, "td")[4].text
         salary = value.find_elements(By.TAG_NAME, "td")[-1].text.replace("$", "").replace(",", "")
 
         data.append([i, name, team, position, age, bat_throw, salary])
 
-    # DataFrame 생성 및 CSV 저장
+    # DataFrame 생성 및 CSV 저장: 타자와 투수의 컬럼명을 다르게 써서 저장
     if category == 'batters':
         df = pd.DataFrame(data,
                           columns=["No", "Name", "Team", "Position", "Age", "Bats", "Salary"])
