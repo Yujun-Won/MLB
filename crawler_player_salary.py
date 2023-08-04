@@ -16,7 +16,7 @@ for category in categories:
     driver.get(f"https://www.spotrac.com/mlb/rankings/2022/salary/{category}/")
     WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "table")))
 
-    # table의 XPATH를 설정하고, table의 요소들을 차례대로 find_element()
+    # table의 전체 XPATH를 설정하고, table의 요소들을 차례대로 find_element()
     table = driver.find_element(By.XPATH,
                                 "/html/body/div[1]/div[2]/div[1]/div/div/div[1]/div/div[3]/div/table")
     tbody = table.find_element(By.TAG_NAME, "tbody")
@@ -25,12 +25,14 @@ for category in categories:
 
     rows = tbody.find_elements(By.TAG_NAME, "tr")
     for i, value in enumerate(rows, start=1):
-        name = value.find_elements(By.TAG_NAME, "td")[1].text.split("\n")[0]
-        team = value.find_elements(By.TAG_NAME, "td")[1].text.split("\n")[1]
-        position = value.find_elements(By.TAG_NAME, "td")[2].text
-        age = value.find_elements(By.TAG_NAME, "td")[3].text
-        bat_throw = value.find_elements(By.TAG_NAME, "td")[4].text
-        salary = value.find_elements(By.TAG_NAME, "td")[-1].text.replace("$", "").replace(",", "")
+        cells = value.find_elements(By.TAG_NAME, "td")
+
+        name = cells[1].text.split("\n")[0]
+        team = cells[1].text.split("\n")[1]
+        position = cells[2].text
+        age = cells[3].text
+        bat_throw = cells[4].text
+        salary = cells[-1].text.replace("$", "").replace(",", "")
 
         data.append([i, name, team, position, age, bat_throw, salary])
 
